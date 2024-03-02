@@ -1,0 +1,199 @@
+------------------------------------------
+CREATE TABLE Owner
+(
+  CNIC INT NOT NULL,
+  First_Name VARCHAR(255) NOT NULL,
+  Last_Name VARCHAR(255) NOT NULL,
+  Gender VARCHAR(255) NOT NULL,
+  Contact VARCHAR(255) NOT NULL,
+  PRIMARY KEY (CNIC)
+);
+
+INSERT INTO Owner(CNIC, First_Name,Last_Name,Gender,Contact)
+VALUES (3740516161485,'Mahad','Zubair','Male','0335-9845409');
+INSERT INTO Owner(CNIC, First_Name,Last_Name,Gender,Contact)
+VALUES (4140949411917,'Saadat','Hussain','Male','0318-5935575');
+INSERT INTO Owner(CNIC, First_Name,Last_Name,Gender,Contact)
+VALUES (3740523435435,'Shanze','Malik','Female','0343-5213151');
+INSERT INTO Owner(CNIC, First_Name,Last_Name,Gender,Contact)
+VALUES (3740532536237,'Ibrahim','Amin','Male','0331-5694565');
+INSERT INTO Owner(CNIC, First_Name,Last_Name,Gender,Contact)
+VALUES (6110172900230,'Amal','Rabia','Female','0335-3568429');
+-----------------------------------------
+CREATE TABLE Workshop
+(
+  Name VARCHAR(255) NOT NULL,
+  City VARCHAR(255) NOT NULL,
+  Street VARCHAR(255) NOT NULL,
+  Plot VARCHAR(255) NOT NULL,
+  Workshop_ID INT NOT NULL,
+  PRIMARY KEY (Workshop_ID)
+);
+INSERT INTO Workshop(Name,City,Street,Plot,Workshop_ID)
+VALUES ('Car Doctor','Islamabad','Number 6','Plot 3',7834);
+INSERT INTO Workshop(Name,City,Street,Plot,Workshop_ID)
+VALUES ('A+ Auto Care','Karachi','Number 10','Plot 9',9845);
+INSERT INTO Workshop(Name,City,Street,Plot,Workshop_ID)
+VALUES ('Mughal Motors','Haripur','Number 5','Plot 31',8975);
+INSERT INTO Workshop(Name,City,Street,Plot,Workshop_ID)
+VALUES ('Mehran AutoMobiles','Makli','Number 9','Plot 4',1498);
+INSERT INTO Workshop(Name,City,Street,Plot,Workshop_ID)
+VALUES ('Khyber Motors','Rawalpindi','Number 3','Plot 13',5696);
+
+------------------------------------------
+CREATE TABLE Parts
+(
+  Part_Name VARCHAR(255) NOT NULL,
+  Part_ID INT NOT NULL,
+  Quantity INT NOT NULL,
+  Price INT NOT NULL,
+  PRIMARY KEY (Part_ID)
+);
+INSERT INTO Parts(Part_Name,Part_ID,Quantity,Price)
+VALUES ('Tyre Set',989,4,45000);
+INSERT INTO Parts(Part_Name,Part_ID,Quantity,Price)
+VALUES ('Headlights',345,2,10000);
+INSERT INTO Parts(Part_Name,Part_ID,Quantity,Price)
+VALUES ('Catalytic Converter',081,4,4310);
+INSERT INTO Parts(Part_Name,Part_ID,Quantity,Price)
+VALUES ('Engine Oil',809,2,5000);
+INSERT INTO Parts(Part_Name,Part_ID,Quantity,Price)
+VALUES ('Air Filter',096,1,1500);
+---------------------------------------
+CREATE TABLE Vehicle
+(
+  Chasis_Number VARCHAR(255) NOT NULL,
+  Make VARCHAR(255) NOT NULL,
+  Car_Model VARCHAR(255) NOT NULL,
+  Variant VARCHAR(255) NOT NULL,
+  Color VARCHAR(255) NOT NULL,
+  Model_Year INT NOT NULL,
+  Engine_Number VARCHAR(255) NOT NULL,
+  Mileage INT NOT NULL,
+  CNIC INT NOT NULL,
+  PRIMARY KEY (Chasis_Number),
+  FOREIGN KEY (CNIC) REFERENCES Owner(CNIC),
+  UNIQUE (Engine_Number)
+);
+INSERT INTO Vehicle(Chasis_Number,Make,Car_Model,Variant,Color,Model_Year,Engine_Number,Mileage,CNIC)
+VALUES ('2CEB354MZOPKJ9297','Toyata','Probox','G','White',2006,'C-358537',140000,3740516161485);
+INSERT INTO Vehicle(Chasis_Number,Make,Car_Model,Variant,Color,Model_Year,Engine_Number,Mileage,CNIC)
+VALUES ('2ACB132KXMN107095','Nissan','Otti','X(Manual)','Medium Silver',2013,'3G83-297880',97000,4140949411917);
+INSERT INTO Vehicle(Chasis_Number,Make,Car_Model,Variant,Color,Model_Year,Engine_Number,Mileage,CNIC)
+VALUES ('1BDC243LYNOJ18186','Toyata','Passo','S','Maroon',2015,'1KR-177674',45000,3740523435435);
+INSERT INTO Vehicle(Chasis_Number,Make,Car_Model,Variant,Color,Model_Year,Engine_Number,Mileage,CNIC)
+VALUES ('3DFC465NAPQLK0308','Suzuki','Swift','SA-310','Red',1997,'A-132846',127000,3740532536237);
+INSERT INTO Vehicle(Chasis_Number,Make,Car_Model,Variant,Color,Model_Year,Engine_Number,Mileage,CNIC)
+VALUES ('4EGD576OBQRML1419','Suzuki','Hustler','G-Turbo','Grey',2014,'R06A1390678',33567,6110172900230);
+
+-------------------------------------------
+CREATE TABLE Service
+(
+  Service_Description VARCHAR(255) NOT NULL,
+  Date_of_Service DATE NOT NULL,
+  Amount INT NOT NULL,
+  Workshop_ID INT NOT NULL,
+  Chasis_Number VARCHAR(255) NOT NULL,
+  PRIMARY KEY (Service_Description, Date_of_Service),
+  FOREIGN KEY (Workshop_ID) REFERENCES Workshop(Workshop_ID),
+  FOREIGN KEY (Chasis_Number) REFERENCES Vehicle(Chasis_Number)
+);
+INSERT INTO Service(Service_Description,Date_Of_Service,Amount,Workshop_ID,Chasis_Number)
+VALUES('Car Tuning',TO_DATE('05/01/2023','DD/MM/YY'),6000,1498,'2ACB132KXMN107095');
+INSERT INTO Service(Service_Description,Date_Of_Service,Amount,Workshop_ID,Chasis_Number)
+VALUES('Oil Change',TO_DATE('25/12/2022','DD/MM/YY'),3600,7834,'2CEB354MZOPKJ9297');
+INSERT INTO Service(Service_Description,Date_Of_Service,Amount,Workshop_ID,Chasis_Number)
+VALUES('Tyre Change',TO_DATE('15/11/2022','DD/MM/YY'),44000,8975,'1BDC243LYNOJ18186');
+INSERT INTO Service(Service_Description,Date_Of_Service,Amount,Workshop_ID,Chasis_Number)
+VALUES('Catalytic Converter Replacement',TO_DATE('21/07/2022','DD/MM/YY'),50000,9845,'3DFC465NAPQLK0308');
+INSERT INTO Service(Service_Description,Date_Of_Service,Amount,Workshop_ID,Chasis_Number)
+VALUES('Headlight Replacement',TO_DATE('12/01/2023','DD/MM/YY'),6000,5696,'4EGD576OBQRML1419');
+
+---------------------------------------------
+CREATE TABLE Registration
+(
+  Registration_Number VARCHAR(255) NOT NULL,
+  Registration_Authority VARCHAR(255) NOT NULL,
+  Registration_Year INT NOT NULL,
+  Date_of_Registration DATE NOT NULL,
+  Chasis_Number VARCHAR(255) NOT NULL,
+  PRIMARY KEY (Registration_Number,Registration_Authority),
+  FOREIGN KEY (Chasis_Number) REFERENCES Vehicle(Chasis_Number)
+
+);
+INSERT INTO Registration(Registration_Number,Registration_Authority,Registration_Year,Date_of_Registration,Chasis_Number)
+VALUES('AWJ-525','Govt of Sindh',2011,TO_DATE('22/01/11','DD/MM/YY'),'2CEB354MZOPKJ9297');
+INSERT INTO Registration(Registration_Number,Registration_Authority,Registration_Year,Date_of_Registration,Chasis_Number)
+VALUES('BHQ-914','Govt of Sindh',2013,TO_DATE('2/03/13','DD/MM/YY'),'2ACB132KXMN107095');
+INSERT INTO Registration(Registration_Number,Registration_Authority,Registration_Year,Date_of_Registration,Chasis_Number)
+VALUES('ADX-202','Federal Govt',2014,TO_DATE('3/03/14','DD/MM/YY'),'1BDC243LYNOJ18186');
+INSERT INTO Registration(Registration_Number,Registration_Authority,Registration_Year,Date_of_Registration,Chasis_Number)
+VALUES('AAT-507','Govt of Sindh',1997,TO_DATE('5/06/97','DD/MM/YY'),'3DFC465NAPQLK0308');
+INSERT INTO Registration(Registration_Number,Registration_Authority,Registration_Year,Date_of_Registration,Chasis_Number)
+VALUES('BHM-306','Federal Govt',2015,TO_DATE('14/04/15','DD/MM/YY'),'4EGD576OBQRML1419');
+
+---------------------------------------------------
+CREATE TABLE Parts_Replaced
+(
+  Part_ID INT NOT NULL,
+  Service_Description VARCHAR(255) NOT NULL,
+  Date_of_Service DATE NOT NULL,
+  PRIMARY KEY (Part_ID, Service_Description, Date_of_Service),
+  FOREIGN KEY (Part_ID) REFERENCES Parts(Part_ID),
+  FOREIGN KEY (Service_Description, Date_of_Service) REFERENCES Service(Service_Description, Date_of_Service)
+);
+INSERT INTO Parts_Replaced(Part_ID,Service_Description,Date_of_Service)
+VALUES (989,'Tyre Change',TO_DATE('15/11/2022','DD/MM/YY'));
+INSERT INTO Parts_Replaced(Part_ID,Service_Description,Date_of_Service)
+VALUES (345,'Headlight Replacement',TO_DATE('12/01/2023','DD/MM/YY'));
+INSERT INTO Parts_Replaced(Part_ID,Service_Description,Date_of_Service)
+VALUES (809,'Oil Change',TO_DATE('25/12/2022','DD/MM/YY'));
+INSERT INTO Parts_Replaced(Part_ID,Service_Description,Date_of_Service)
+VALUES (081,'Catalytic Converter Replacement',TO_DATE('21/07/2022','DD/MM/YY'));
+INSERT INTO Parts_Replaced(Part_ID,Service_Description,Date_of_Service)
+VALUES (096,'Car Tuning',TO_DATE('05/01/2023','DD/MM/YY'));
+---------------------------------------
+--TABLE PROJECTION
+---------------------------------------
+SELECT * FROM Owner;
+SELECT * FROM Parts_Replaced;
+SELECT * FROM Registration;
+SELECT * FROM Service;
+SELECT * FROM Vehicle;
+SELECT * FROM Parts;
+SELECT * FROM Workshop;
+---------------------------------------
+--Administrator or Excise Dept VIEW
+---------------------------------------
+CREATE VIEW Excise_Dept AS 
+SELECT * FROM ((((((Vehicle NATURAL FULL OUTER JOIN Owner) NATURAL FULL OUTER JOIN Service) NATURAL FULL OUTER JOIN Registration) NATURAL FULL OUTER JOIN Workshop) NATURAL FULL OUTER JOIN Parts_Replaced) NATURAL FULL OUTER JOIN Parts);
+SELECT * FROM Excise_Dept;
+------------------------------------------
+--Customer VIEW
+------------------------------------------
+CREATE VIEW Customer AS
+SELECT V.Make,V.Car_Model,V.Variant,V.Color,V.Model_Year,V.Mileage,R.Registration_Number,R.Registration_Authority,R.Registration_Year, S.Date_of_Service,S.Service_Description,S.Amount
+FROM ((Vehicle V NATURAL FULL OUTER JOIN Registration R) NATURAL FULL OUTER JOIN Service S);
+SELECT * FROM Customer;
+-------------------------------------------
+--Vehicle Owner's VIEW
+-------------------------------------------
+CREATE VIEW Vehicle_Owner AS
+SELECT * 
+FROM ((((Vehicle NATURAL FULL OUTER JOIN Registration)NATURAL FULL OUTER JOIN Service)NATURAL FULL OUTER JOIN Workshop)NATURAL FULL OUTER JOIN Parts_Replaced);
+SELECT * FROM Vehicle_Owner;
+-------------------------------------------
+--Vehicle Dealer's VIEW
+-------------------------------------------
+CREATE VIEW Vehicle_Dealer AS
+SELECT Make,Car_Model,Variant,Color,Model_Year,Engine_Number,Mileage, First_Name,Last_Name,Gender,Contact,Registration_Number,Registration_Authority,Registration_Year,Date_of_Service,Service_Description,Workshop_ID,Amount,Part_ID
+FROM ((((Vehicle  NATURAL FULL OUTER JOIN Owner ) NATURAL FULL OUTER JOIN Registration ) NATURAL FULL OUTER JOIN Service ) NATURAL FULL OUTER JOIN Parts_Replaced);
+SELECT * FROM Vehicle_Dealer;
+-------------------------------------------
+--Mechanic's View
+-------------------------------------------
+CREATE VIEW Mechanic AS
+SELECT Chasis_Number,Make,Car_Model,Variant,Color,Model_Year,Engine_Number,Mileage, Date_of_Service,Service_Description, Part_ID
+FROM ((Vehicle NATURAL FULL OUTER JOIN Service )NATURAL FULL OUTER JOIN Parts);
+SELECT * FROM Mechanic;
+-------------------------------------------
